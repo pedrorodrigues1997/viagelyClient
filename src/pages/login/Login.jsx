@@ -1,8 +1,8 @@
 import React from "react"
 import "./Login.scss"
-import newRequest from "../../utils/newRequest.js"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import newRequest from "../../utils/newRequest";
 
 
 function Login() {

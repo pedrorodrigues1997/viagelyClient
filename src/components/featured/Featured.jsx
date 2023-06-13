@@ -1,5 +1,6 @@
 import React from "react";
 import "./Featured.scss";
+import { Link } from "react-router-dom";
 
 function Featured() {
   return (
@@ -12,9 +13,11 @@ function Featured() {
           <div className="search">
             <div className="searchInput">
               <img src="./img/search.png" alt="" />
-              <input type="text" placeholder='Try "building mobil app"' />
+              <input type="text" placeholder='Try "building mobile app"' />
             </div>
+            <Link className="link" to="/ads">
             <button>Search</button>
+            </Link>
           </div>
           <div className="popular">
             <span>Popular:</span>

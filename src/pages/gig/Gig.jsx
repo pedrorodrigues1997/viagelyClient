@@ -1,7 +1,7 @@
 import React from "react";
 import "./Gig.scss";
 import { Slider } from "infinite-react-carousel/lib";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import Reviews from "../../components/reviews/Reviews";
@@ -138,8 +138,9 @@ const {id} = useParams();
           <p>
             {data.shortDescription}
           </p>
-          
+          <Link to = {`/pay/${id}`}>
           <button>Continue</button>
+          </Link>
         </div>
       </div>}
     </div>

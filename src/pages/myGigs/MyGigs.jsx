@@ -1,19 +1,47 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./MyGigs.scss";
-
+import getCurrentUser from "../../utils/getCurrentUser";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import newRequest from "../../utils/newRequest";
+ 
+//currentUser.id ou currentUser._id ??????
 function MyGigs() {
-  const currentUser = {
-    id: 1,
-    username: "Anna",
-    isSeller: true,
-  };
+  const currentUser = getCurrentUser();
+
+  const queryClient = useQueryClient();
+  const {isLoading, error, data } = useQuery({
+    queryKey:["myAds"],
+    queryFn: () => 
+        newRequest.get(`/ads?userId=${currentUser._id}`).then((res) => {
+          return res.data;
+        }),
+  });
+
+  const mutation = useMutation({
+    mutationFn: (id) => {
+      return newRequest.delete(`/ads/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["myAds"]);
+    },
+  });
+
+
+  const handleDelete = (id) => {
+    mutation.mutate(id);
+  }
+
 
   return (
     <div className="myGigs">
-      <div className="container">
+      {
+        isLoading ? "Loading" :
+        error ? "Something wrong happened!" :        
+        
+        <div className="container">
         <div className="title">
-          <h1>{currentUser.isSeller ? "Gigs" : "Orders"}</h1>
+          <h1>Gigs</h1>
           {currentUser.isSeller && (
             <Link to="/add">
               <button>Add New Gig</button>
@@ -28,98 +56,25 @@ function MyGigs() {
             <th>Sales</th>
             <th>Action</th>
           </tr>
-          <tr>
+          {data.map(gig => (
+            
+            <tr key={gig.id}>
             <td>
               <img
                 className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src={gig.cover}
                 alt=""
               />
             </td>
-            <td>Stunning concept art</td>
-            <td>59.<sup>99</sup></td>
-            <td>13</td>
+            <td>{gig.title}</td>
+            <td>{gig.price}</td>
+            <td>{gig.sales}</td>
             <td>
-              <img className="delete" src="./img/delete.png" alt="" />
+              <img className="delete" src="./img/delete.png" alt="" onClick={()=>handleDelete(gig._id)}/>
             </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Ai generated concept art</td>
-            <td>120.<sup>99</sup></td>
-            <td>41</td>
-            <td>
-              <img className="delete" src="./img/delete.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>High quality digital character</td>
-            <td>79.<sup>99</sup></td>
-            <td>55</td>
-            <td>
-              <img className="delete" src="./img/delete.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Illustration hyper realistic painting</td>
-            <td>119.<sup>99</sup></td>
-            <td>29</td>
-            <td>
-              <img className="delete" src="./img/delete.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Original ai generated digital art</td>
-            <td>59.<sup>99</sup></td>
-            <td>34</td>
-            <td>
-              <img className="delete" src="./img/delete.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Text based ai generated art</td>
-            <td>110.<sup>99</sup></td>
-            <td>16</td>
-            <td>
-              <img className="delete" src="./img/delete.png" alt="" />
-            </td>
-          </tr>
+          </tr>))}
         </table>
-      </div>
+      </div>}
     </div>
   );
 }

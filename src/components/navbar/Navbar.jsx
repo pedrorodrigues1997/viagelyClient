@@ -43,10 +43,14 @@ function Navbar() {
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
         <div className="logo">
-          <Link className="link" to="/">
-            <span className="text">liverr</span>
+          <Link className="links" to="/">
+          {active ? (
+              <img className="logoImage" src="/img/default-monochrome-black.svg" alt="Navbar Icon"/>
+            ) : (
+              <img className="logoImage" src="/img/default-monochrome-white.svg" alt="Navbar Icon"/>
+            )}
           </Link>
-          <span className="dot">.</span>
+          
         </div>
         <div className="links">
           <span>Liverr Business</span>

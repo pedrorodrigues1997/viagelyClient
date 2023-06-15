@@ -16,7 +16,6 @@ function Register() {
       password:"",
       img:"",
       country:"",
-      isSeller: false,
       desc:""
   })
   
@@ -26,15 +25,6 @@ function Register() {
         return{...prev, [e.target.name]: e.target.value};
       });
   };
-
-
-const handleSeller = (e)=>{
-   setUser(prev=>{
-     return{...prev, isSeller: e.target.checked};
-   });
- };
-
-
 
  const navigate = useNavigate();
 
@@ -89,15 +79,7 @@ const handleSubmit = async (e)=>{
           />
           <button type="submit">Register</button>
         </div>
-        <div className="right">
-          <h1>I want to become a seller</h1>
-          <div className="toggle">
-            <label htmlFor="">Activate the seller account</label>
-            <label className="switch">
-              <input type="checkbox" onChange={handleSeller} />
-              <span className="slider round"></span>
-            </label>
-          </div>
+        <div className="right">   
           <label htmlFor="">Phone Number</label>
           <input
             name="phone"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Gig.scss";
 import { Slider } from "infinite-react-carousel/lib";
 import { Link, useParams } from "react-router-dom";
@@ -21,11 +21,12 @@ const {id} = useParams();
   });
 
   const userId = data?.userId;
-
+  
   const {
     isLoading: isLoadingUser,
     error: errorUser,
     data: dataUser,
+    refetch: refetchUser,
   } = useQuery({
     queryKey: ["user"],
     queryFn: () =>
@@ -35,6 +36,14 @@ const {id} = useParams();
     enabled: !!userId,
   });
 
+  useEffect(() => {
+    if (userId) {
+      refetchUser();
+    }
+  }, [userId, refetchUser]);
+
+console.log(data);
+  console.log(dataUser);
   return (
     <div className="gig">
       {isLoading ? " loading" : error ? "Something went wrong" : <div className="container">

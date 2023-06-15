@@ -7,19 +7,27 @@ import { useNavigate } from "react-router-dom"
 function Navbar() {
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openCurrency, setOpenCurrency] = useState(false);
+  const [openLanguages, setOpenLanguages] = useState(false);
 
   const { pathname } = useLocation();
 
-  const isActive = () => {
-    window.scrollY > 0 ? setActive(true) : setActive(false);
-  };
-
   useEffect(() => {
-    window.addEventListener("scroll", isActive);
-    return () => {
-      window.removeEventListener("scroll", isActive);
+    const handleScroll = () => {
+      if (pathname === "/") {
+        window.scrollY > 0 ? setActive(true) : setActive(false);
+      }else{
+        setActive(true);
+      }
     };
-  }, []);
+
+    handleScroll(); //Chamo aqui para ir buscar um estado inicial(Na home page será branco (Active a false) e noutra pagina qq é active true(logo preto),
+    // assim a funcionalidade de mudar de cor apenas resulta na Homepage)
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [pathname]);
 
 
   const navigate = useNavigate();
@@ -53,37 +61,30 @@ function Navbar() {
           
         </div>
         <div className="links">
-          <span>Liverr Business</span>
-          <span>Explore</span>
           <span>English</span>
-          {!currentUser?.isSeller && <span>Become a Seller</span>}
+          
           {currentUser ? (
             <div className="user" onClick={()=>setOpen(!open)}>
               <img
-                src={currentUser.img || "/img/coin.png"}
+                src={currentUser.image || "/img/noavatar.png"}
                 alt=""
               />
               <span>{currentUser?.username}</span>
               {open && <div className="options">
-                {currentUser.isSeller && (
-                  <>
+                
+                  
                     <Link className="link" to="/mygigs">
-                      Gigs
+                      Ads
                     </Link>
                     <Link className="link" to="/add">
-                      Add New Gig
+                      Create a new Add
                     </Link>
-                  </>
-                )}
-                <Link className="link" to="/orders">
-                  Orders
-                </Link>
-                <Link className="link" to="/messages">
-                  Messages
-                </Link>
-                <Link className="link" onClick={handleLogout}>
-                  Logout
-                </Link>
+                  <Link className="link" to="/orders">
+                    Purchased Iteneraries
+                  </Link>
+                  <Link className="link" onClick={handleLogout}>
+                    Logout
+                  </Link>
               </div>}
             </div>
           ) : (

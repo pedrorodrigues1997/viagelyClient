@@ -12,16 +12,24 @@ function Gigs() {
   const maxRef = useRef();
 
   const { search } = useLocation();
+  let searchParam = "";
 
-  const { isLoading, error, data, refetch} = useQuery({
+  if (search !== "") {
+    searchParam = search.substring(1);
+  } else {
+    searchParam = search;
+  }
+  
+  const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["gigs"],
     queryFn: () =>
-      newRequest.get(`/ads${search}&min=${minRef.current.value}&max=${maxRef.current.value}&sort=${sort}`
-        )
+      newRequest.get(`/ads?${searchParam}&min=${minRef.current.value}&max=${maxRef.current.value}&sort=${sort}`)
         .then((res) => {
           return res.data;
         }),
   });
+
+  console.log(`/ads${search}&min=&max=&sort=${sort}`);
 
   console.log(data);
 

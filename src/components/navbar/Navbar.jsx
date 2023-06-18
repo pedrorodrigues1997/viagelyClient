@@ -53,16 +53,16 @@ function Navbar() {
         <div className="logo">
           <Link className="links" to="/">
           {active ? (
-              <img className="logoImage" src="/img/default-monochrome-black.svg" alt="Navbar Icon"/>
+              <img className="logoImage" src="/img/ViagelyBlack.svg" alt="Navbar Icon"/>
             ) : (
-              <img className="logoImage" src="/img/default-monochrome-white.svg" alt="Navbar Icon"/>
+              <img className="logoImage" src="/img/ViagelyWhite2.svg" alt="Navbar Icon"/>
             )}
           </Link>
           
         </div>
         <div className="links">
           <span>English</span>
-          
+          <Link className="link" to= "/ads"><span>Explore</span></Link>
           {currentUser ? (
             <div className="user" onClick={()=>setOpen(!open)}>
               <img

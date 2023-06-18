@@ -1,5 +1,12 @@
 import React from "react";
 import "./Footer.scss";
+import {
+  FiGithub,
+  FiInstagram,
+  FiYoutube,
+  FiLinkedin,
+  FiTwitter,
+} from "react-icons/fi";
 
 function Footer() {
   return (
@@ -73,6 +80,7 @@ function Footer() {
           </div>
           <div className="right">
             <div className="social">
+             <FiGithub />
               <img src="/img/twitter.png" alt="" />
               <img src="/img/facebook.png" alt="" />
               <img src="/img/linkedin.png" alt="" />

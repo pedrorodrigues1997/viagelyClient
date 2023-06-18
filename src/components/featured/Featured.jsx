@@ -8,7 +8,13 @@ function Featured() {
 const [input, setInput] = useState("");
 const navigate = useNavigate();
 const handleSubmit = () =>{
-  navigate(`/ads?search=${input}`);
+  if (input !== "") {
+    navigate(`/ads?search=${input}`);
+  } else {
+    // Perform another action when input is empty
+    navigate(`/ads`);
+  
+  }
 
 
 }

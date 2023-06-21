@@ -9,6 +9,7 @@ import CheckoutForm from "../../components/checkoutForm/CheckoutForm";
 const stripePromise = loadStripe(
   "pk_test_51NIXdEFdEw69adsIfAVfjJoG7NsI5CUXxITSEHP6ZpEUuJxHKlKE5YD1LyDcQOLbmluR3JQs51OjtUuGzgtFRelS004UHphsID"
 );
+console.log("IM INNNNNNNNNNNNNNNNNNNN BEFORE POAY")
 
 const Pay = () => {
   console.log("IM INNNNNNNNNNNNNNNNNNNN")

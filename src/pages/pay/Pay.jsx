@@ -11,6 +11,7 @@ const stripePromise = loadStripe(
 );
 
 const Pay = () => {
+  console.log("IM INNNNNNNNNNNNNNNNNNNN")
   const [clientSecret, setClientSecret] = useState("");
 
   const { id } = useParams();
@@ -18,15 +19,20 @@ const Pay = () => {
   useEffect(() => {
     const makeRequest = async () => {
       try {
+        console.log("Im RUNNING !!!!!!")
         const res = await newRequest.post(
           `/orders/create-payment-intent/${id}`
         );
+        console.log(res.data);
         setClientSecret(res.data.clientSecret);
       } catch (err) {
         console.log(err);
       }
     };
+    console.log("Before");
     makeRequest();
+    console.log("After");
+
   }, []);
 
   const appearance = {

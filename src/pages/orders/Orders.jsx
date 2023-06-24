@@ -1,11 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Orders.scss";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import { useLocation } from "react-router-dom";
 const Orders = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const navigate = useNavigate();
 
 
   const { isLoading, error, data} = useQuery({
@@ -17,6 +18,12 @@ const Orders = () => {
           return res.data;
         }),
   });
+
+
+  const handleRedirect = (gigId) => {
+    navigate(`/ads/${gigId}`);
+  }
+
 
   return (
     <div className="orders">
@@ -43,10 +50,11 @@ const Orders = () => {
                   className="image"
                   src={order.image}
                   alt=""
+                  onClick={()=>handleRedirect(order.adId)}
                 />
               </td>
-              <td>{order.title}</td>
-              <td>{order.price}</td>
+              <td onClick={()=>handleRedirect(order.adId)}>{order.title}</td>
+              <td onClick={()=>handleRedirect(order.adId)}>{order.price}</td>
             </tr>
 
 

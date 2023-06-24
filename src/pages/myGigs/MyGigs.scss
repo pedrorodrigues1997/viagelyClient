@@ -45,10 +45,12 @@
             width: 20px;
             cursor: pointer;
           }
-
+          
         }
         &:nth-child(even) {
           background-color: #1dbf730f;
+          cursor: pointer;
+
         }
       }
     }

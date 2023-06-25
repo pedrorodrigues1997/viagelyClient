@@ -162,13 +162,15 @@ const {id} = useParams();
           <Reviews gigId={id} userId={dataCurrentUser._id} sellerId={data.userId}/>
               )}
         </div>
-        {isLoadingCurrentUser ? (
+        {
+        isLoadingCurrentUser ? (
             "Loading"
              ): errorCurrentUser ? (
               "Something went wrong!"
               ) :(
+                currentUserLocal && dataCurrentUser && (     
           data.userId === dataCurrentUser._id ||
-          dataCurrentUser.purchasedOrders.includes(data._id) ? (
+          dataCurrentUser.purchasedOrders.includes(data._id)) ? (
             ""
           ) : (
             <div className="right">

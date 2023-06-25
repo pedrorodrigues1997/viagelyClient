@@ -3,7 +3,7 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 import "./Navbar.scss";
 import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom"
-
+import { useQuery } from "@tanstack/react-query";
 function Navbar() {
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
@@ -46,6 +46,19 @@ function Navbar() {
   }
 
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUserLocalId = currentUser?._id;
+  const {
+    isLoading: isLoadingCurrentUser,
+    error: errorCurrentUser,
+    data: dataCurrentUser,
+  } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () =>
+      newRequest.get(`/users/${currentUserLocalId}`).then((res) => {
+        return res.data;
+      }),
+    //enabled: !!userId,
+  });
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -63,13 +76,17 @@ function Navbar() {
         <div className="links">
           <span>English</span>
           <Link className="link" to= "/ads"><span>Explore</span></Link>
-          {currentUser ? (
+          {isLoadingCurrentUser ? (
+              "Loading"
+               ): errorCurrentUser ? (
+                "Something went wrong!"
+                ) :dataCurrentUser ? (
             <div className="user" onClick={()=>setOpen(!open)}>
               <img
-                src={currentUser.image || "/img/noavatar.png"}
+                src={dataCurrentUser.image || "/img/noavatar.png"}
                 alt=""
               />
-              <span>{currentUser?.username}</span>
+              <span>{dataCurrentUser?.username}</span>
               {open && <div className="options">
                 
                   

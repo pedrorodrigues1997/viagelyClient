@@ -38,6 +38,19 @@ function MyGigs() {
     navigate(`/ads/${gigId}`);
   }
 
+
+  const handleClick = () =>{
+    if (input !== "") {
+      navigate(`/ads?search=${input}`);
+    } else {
+      // Perform another action when input is empty
+      navigate(`/ads`);
+    
+    }
+  
+  
+  }
+
   return (
     <div className="myGigs">
       {
@@ -51,7 +64,7 @@ function MyGigs() {
             <Link to="/add">
               <button>Add New Gig</button>
             </Link>
-          
+            <button onClick={handleClick}>Checkout</button>
         </div>
         <table>
           <tr>

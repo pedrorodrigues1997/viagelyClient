@@ -4,6 +4,7 @@ import "./Orders.scss";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import { useLocation } from "react-router-dom";
+import LoadingCircle from "../../components/LoadingCircle/LoadingCircle";
 const Orders = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Orders = () => {
   return (
     <div className="orders">
       {
-        isLoading ? "loading" : error ? "error" :
+        isLoading ? <LoadingCircle /> : error ? "error" :
         
         
         <div className="container">

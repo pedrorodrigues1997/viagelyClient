@@ -47,18 +47,19 @@ function Navbar() {
 
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const currentUserLocalId = currentUser?._id;
-  const {
-    isLoading: isLoadingCurrentUser,
-    error: errorCurrentUser,
-    data: dataCurrentUser,
-  } = useQuery({
-    queryKey: ["currentUser"],
-    queryFn: () =>
-      newRequest.get(`/users/${currentUserLocalId}`).then((res) => {
-        return res.data;
-      }),
-    //enabled: !!userId,
-  });
+    const {
+      isLoading: isLoadingCurrentUser,
+      error: errorCurrentUser,
+      data: dataCurrentUser,
+    } = useQuery({
+      queryKey: ["currentUser"],
+      queryFn: () =>
+        newRequest.get(`/users/${currentUserLocalId}`).then((res) => {
+          return res.data;
+        }),
+      enabled: !!currentUserLocalId,
+    });
+  
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -76,37 +77,36 @@ function Navbar() {
         <div className="links">
           <span>English</span>
           <Link className="link" to= "/ads"><span>Explore</span></Link>
-          {isLoadingCurrentUser ? (
+          {currentUser ? (
+            isLoadingCurrentUser ? (
               "Loading"
-               ): errorCurrentUser ? (
-                "Something went wrong!"
-                ) :dataCurrentUser ? (
-            <div className="user" onClick={()=>setOpen(!open)}>
-              <img
-                src={dataCurrentUser.image || "/img/noavatar.png"}
-                alt=""
-              />
-              <span>{dataCurrentUser?.username}</span>
-              {open && <div className="options">
-                
-                  
+            ) : errorCurrentUser ? (
+              "Something went wrong!"
+            ) : (
+              <div className="user" onClick={() => setOpen(!open)}>
+                <img src={dataCurrentUser.image || "/img/noavatar.png"} alt="" />
+                <span>{dataCurrentUser?.username}</span>
+                {open && (
+                  <div className="options">
                     <Link className="link" to="/mygigs">
                       Ads
                     </Link>
                     <Link className="link" to="/add">
                       Create a new Add
                     </Link>
-                  <Link className="link" to="/orders">
-                    Purchased Iteneraries
-                  </Link>
-                  <Link className="link" onClick={handleLogout}>
-                    Logout
-                  </Link>
-              </div>}
-            </div>
+                    <Link className="link" to="/orders">
+                      Purchased Itineraries
+                    </Link>
+                    <Link className="link" onClick={handleLogout}>
+                      Logout
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )
           ) : (
             <>
-              <Link to = "/login" className="link">Sign in</Link>
+              <Link to="/login" className="link">Sign in</Link>
               <Link className="link" to="/register">
                 <button>Join</button>
               </Link>

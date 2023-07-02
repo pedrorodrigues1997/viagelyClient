@@ -21,7 +21,25 @@ const {id} = useParams();
   });
 
   const userId = data?.userId;
-  
+  const currentUserLocal = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUserLocalId = currentUserLocal?._id;
+  const {
+    isLoading: isLoadingCurrentUser,
+    error: errorCurrentUser,
+    data: dataCurrentUser,
+  } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: () =>
+      newRequest.get(`/users/${currentUserLocalId}`).then((res) => {
+        return res.data;
+      }),
+    //enabled: !!userId,
+  });
+
+
+
+
+
   const {
     isLoading: isLoadingUser,
     error: errorUser,
@@ -41,9 +59,7 @@ const {id} = useParams();
       refetchUser();
     }
   }, [userId, refetchUser]);
-
-console.log(data);
-  console.log(dataUser);
+  
   return (
     <div className="gig">
       {isLoading ? " loading" : error ? "Something went wrong" : <div className="container">
@@ -131,26 +147,45 @@ console.log(data);
                 </div>
               </div>
               <hr />
-              <p>
+              <p className="desc">
                 {dataUser.desc}
               </p>
             </div>
           </div>
           )}
-          <Reviews gigId={id}/>
+          {isLoadingCurrentUser ? (
+            "Loading"
+             ): errorCurrentUser ? (
+              "Something went wrong!"
+              ) :(
+                
+          <Reviews gigId={id} userId={dataCurrentUser._id} sellerId={data.userId}/>
+              )}
         </div>
-        <div className="right">
-          <div className="price">
-            <h3>{data.shortTitle}</h3>
-            <h2>$ {data.price}</h2>
-          </div>
-          <p>
-            {data.shortDescription}
-          </p>
-          <Link to = {`/pay/${id}`}>
-          <button>Continue</button>
-          </Link>
-        </div>
+        {
+        isLoadingCurrentUser ? (
+            "Loading"
+             ): errorCurrentUser ? (
+              "Something went wrong!"
+              ) :(
+                currentUserLocal && dataCurrentUser && (     
+          data.userId === dataCurrentUser._id ||
+          dataCurrentUser.purchasedOrders.includes(data._id)) ? (
+            ""
+          ) : (
+            <div className="right">
+              <div className="price">
+                <h3>{data.shortTitle}</h3>
+                <h2>$ {data.price}</h2>
+              </div>
+              <p className= "details">{data.shortDesc}</p>
+              <Link to={`/pay/${id}`}>
+                <button>Continue</button>
+              </Link>
+            </div>
+          )
+        )}
+      
       </div>}
     </div>
   );

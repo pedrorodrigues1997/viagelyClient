@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./MyGigs.scss";
 import getCurrentUser from "../../utils/getCurrentUser";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import newRequest from "../../utils/newRequest";
 //currentUser.id ou currentUser._id ??????
 function MyGigs() {
   const currentUser = getCurrentUser();
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
   const {isLoading, error, data } = useQuery({
@@ -32,6 +33,10 @@ function MyGigs() {
     mutation.mutate(id);
   }
 
+
+  const handleRedirect = (gigId) => {
+    navigate(`/ads/${gigId}`);
+  }
 
   return (
     <div className="myGigs">
@@ -64,10 +69,11 @@ function MyGigs() {
                 className="image"
                 src={gig.cover}
                 alt=""
+                onClick={()=>handleRedirect(gig._id)}
               />
             </td>
-            <td>{gig.title}</td>
-            <td>{gig.price}</td>
+            <td onClick={()=>handleRedirect(gig._id)}>{gig.title}</td>
+            <td onClick={()=>handleRedirect(gig._id)}>{gig.price}</td>
             <td>{gig.sales}</td>
             <td>
               <img className="delete" src="./img/delete.png" alt="" onClick={()=>handleDelete(gig._id)}/>

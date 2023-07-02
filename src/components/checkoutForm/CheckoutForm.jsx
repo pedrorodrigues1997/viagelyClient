@@ -28,6 +28,8 @@ const CheckoutForm = () => {
     }
 
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+      console.log("CheckoutForm1 " + paymentIntent);
+
       switch (paymentIntent.status) {
         case "succeeded":
           setMessage("Payment succeeded!");
@@ -81,6 +83,8 @@ const CheckoutForm = () => {
   const paymentElementOptions = {
     layout: "tabs",
   };
+
+  console.log(message);
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
